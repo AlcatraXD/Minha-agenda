@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<title>Manicure - Gestão de Clientes e Serviços</title>
+
+<!-- Meta tags otimizadas -->
+<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; media-src *">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#d81b60">
+
+<style>
+  :root {
+    --primary: #d81b60; --primary-dark: #ad1457; 
+    --success: #2e7d32; --danger: #c62828; --warning: #f57c00; --info: #0277bd;
+    --bg: #f8f9fa; --card: #fff; --text: #2c3e50; --muted: #7f8c8d; --border: #e0e0e0;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --radius: 12px;
+    --safe-area-inset-top: env(safe-area-inset-top);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom);
+  }
+
+  * { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html { 
+    scroll-behavior: smooth; 
+    height: 100%; 
+  }
+
+  body {
+    margin: 0; 
+    background: var(--bg); 
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    line-height: 1.5;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    min-height: 100vh;
+  }
+
+  /* Header e Navegação */
+  .app-header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    position: relative;
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+
+  .app-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .app-nav {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 14px 12px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    position: relative;
+  }
+
+  .nav-btn.active {
+    color: var(--primary);
+  }
+
+  .nav-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    width: 60%;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 3px 3px 0 0;
+  }
+
+  /* Conteúdo Principal */
+  .app-main {
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+
+  .section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .section.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Cards e Formulários */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+
+  .section-title {
+    color: var(--primary);
+    margin: 24px 0 12px;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background: white;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.1);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    min-height: 50px;
+    width: 100%;
+  }
+
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-success { background: var(--success); color: white; }
+  .btn-danger { background: var(--danger); color: white; }
+  .btn-warning { background: var(--warning); color: white; }
+  .btn-info { background: var(--info); color: white; }
+  .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .btn:active { transform: translateY(0); }
+
+  /* Grid e Layout */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0 -6px;
+  }
+
+  .col {
+    flex: 1;
+    min-width: 200px;
+    padding: 0 6px;
+  }
+
+  /* Listas e Itens */
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .list-item {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+  }
+
+  .list-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+
+  .client-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .client-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+
+  .client-meta {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  .client-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .client-actions .btn {
+    flex: 1;
+    min-width: 120px;
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  /* KPIs e Estatísticas */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .kpi-card {
+    background: white;
+    padding: 16px;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--primary);
+  }
+
+  .kpi-card.success { border-left-color: var(--success); }
+  .kpi-card.warning { border-left-color: var(--warning); }
+  .kpi-card.danger { border-left-color: var(--danger); }
+
+  .kpi-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 8px 0;
+  }
+
+  .kpi-card.success .kpi-value { color: var(--success); }
+  .kpi-card.warning .kpi-value { color: var(--warning); }
+  .kpi-card.danger .kpi-value { color: var(--danger); }
+
+  .kpi-label {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* Modais */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .modal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  }
+
+  .modal.active .modal-content {
+    transform: scale(1);
+  }
+
+  .modal-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 5px;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+
+  /* Serviços no Modal */
+  .service-option {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .service-option:hover {
+    border-color: var(--primary);
+    background: #f8f9fa;
+  }
+
+  .service-option.selected {
+    border-color: var(--primary);
+    background: rgba(216, 27, 96, 0.05);
+  }
+
+  .service-checkbox {
+    margin-right: 12px;
+  }
+
+  .service-info {
+    flex: 1;
+  }
+
+  .service-name {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .service-price {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  /* Histórico de Serviços */
+  .history-item {
+    border-left: 4px solid var(--border);
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    background: #f8f9fa;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .history-item.paid { border-left-color: var(--success); background: #e8f5e8; }
+  .history-item.pending { border-left-color: var(--warning); background: #fff3e0; }
+
+  .history-date {
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+
+  .history-services {
+    margin: 8px 0;
+  }
+
+  .history-service {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.95rem;
+  }
+
+  .history-total {
+    font-weight: 700;
+    border-top: 1px dashed var(--border);
+    padding-top: 8px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Estados Vazios */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  .empty-text {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .empty-subtext {
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+
+  /* Toast Notifications */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(0,0,0,0.9);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 8px;
+    z-index: 2000;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .toast.success { background: var(--success); }
+  .toast.error { background: var(--danger); }
+  .toast.warning { background: var(--warning); }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .app-main { padding: 12px; }
+    .card { padding: 16px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .client-actions .btn { min-width: calc(50% - 4px); }
+    .nav-btn { padding: 12px 8px; font-size: 0.85rem; }
+  }
+
+  @media (max-width: 480px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .client-actions .btn { min-width: 100%; }
+    .col { min-width: 100%; }
+    .modal { padding: 10px; }
+  }
+
+  /* Utilitários */
+  .text-success { color: var(--success); }
+  .text-danger { color: var(--danger); }
+  .text-warning { color: var(--warning); }
+  .text-muted { color: var(--muted); }
+  .text-center { text-align: center; }
+  .mb-0 { margin-bottom: 0; }
+  .mt-0 { margin-top: 0; }
+  .d-none { display: none; }
+  .d-flex { display: flex; }
+  .align-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+
+  /* Loading Spinner */
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="app-title">
+      <span>💅</span>
+      <span>Manicure Pro</span>
+    </div>
+  </header>
+
+  <!-- Navegação -->
+  <nav class="app-nav">
+    <button class="nav-btn active" data-tab="clientes">👥 Clientes</button>
+    <button class="nav-btn" data-tab="servicos">💅 Serviços</button>
+    <button class="nav-btn" data-tab="relatorios">📊 Relatórios</button>
+    <button class="nav-btn" data-tab="configuracoes">⚙️ Configurações</button>
+  </nav>
+
+  <!-- Conteúdo Principal -->
+  <main class="app-main">
+    <!-- Seção Clientes -->
+    <section id="clientes" class="section active">
+      <h2 class="section-title">Gestão de Clientes</h2>
+      
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">➕ Novo Cliente</h3>
+        <form id="form-cliente">
+          <div class="row">
+            <div class="col">
+              <label class="form-label">Nome Completo *</label>
+              <input type="text" class="form-input" id="cliente-nome" placeholder="Ex: Maria Silva" required>
+            </div>
+            <div class="col">
+              <label class="form-label">Telefone</label>
+              <input type="tel" class="form-input" id="cliente-telefone" placeholder="(11) 99999-9999">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label class="form-label">E-mail</label>
+              <input type="email" class="form-input" id="cliente-email" placeholder="cliente@email.com">
+            </div>
+            <div class="col">
+              <label class="form-label">Data de Nascimento</label>
+              <input type="date" class="form-input" id="cliente-nascimento">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Observações</label>
+            <textarea class="form-textarea" id="cliente-observacoes" placeholder="Alergias, preferências, etc." rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">💾 Salvar Cliente</button>
+        </form>
+      </div>
+
+      <h2 class="section-title">📋 Lista de Clientes</h2>
+      <div id="lista-clientes" class="list">
+        <div class="empty-state">
+          <div class="empty-icon">👥</div>
+          <div class="empty-text">Nenhum cliente cadastrado</div>
+          <div class="empty-subtext">Adicione seu primeiro cliente usando o formulário acima</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção Serviços -->
+    <section id="servicos" class="section">
+      <h2 class="section-title">💅 Catálogo de Serviços</h2>
+      
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">➕ Novo Serviço</h3>
+        <form id="form-servico">
+          <div class="row">
+            <div class="col">
+              <label class="form-label">Nome do Serviço *</label>
+              <input type="text" class="form-input" id="servico-nome" placeholder="Ex: Manicure Completa" required>
+            </div>
+            <div class="col">
+              <label class="form-label">Duração (minutos)</label>
+              <input type="number" class="form-input" id="servico-duracao" placeholder="Ex: 60" min="5" step="5">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label class="form-label">Preço (R$) *</label>
+              <input type="number" class="form-input" id="servico-preco" placeholder="Ex: 35.00" step="0.01" min="0" required>
+            </div>
+            <div class="col">
+              <label class="form-label">Categoria</label>
+              <select class="form-select" id="servico-categoria">
+                <option value="">Selecione...</option>
+                <option value="manicure">Manicure</option>
+                <option value="pedicure">Pedicure</option>
+                <option value="alongamento">Alongamento</option>
+                <option value="design">Design</option>
+                <option value="spa">SPA das Mãos/Pés</option>
+                <option value="outros">Outros</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-textarea" id="servico-descricao" placeholder="Descreva o serviço em detalhes..." rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">💾 Salvar Serviço</button>
+        </form>
+      </div>
+
+      <h2 class="section-title">📦 Serviços Cadastrados</h2>
+      <div id="lista-servicos" class="list">
+        <div class="empty-state">
+          <div class="empty-icon">💅</div>
+          <div class="empty-text">Nenhum serviço cadastrado</div>
+          <div class="empty-subtext">Adicione seus primeiros serviços usando o formulário acima</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção Relatórios -->
+    <section id="relatorios" class="section">
+      <h2 class="section-title">📊 Dashboard Financeiro</h2>
+      
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">A Receber</div>
+          <div class="kpi-value" id="kpi-pendente">R$ 0,00</div>
+          <div class="kpi-label" id="kpi-pendente-count">0 clientes</div>
+        </div>
+        <div class="kpi-card success">
+          <div class="kpi-label">Recebido (Mês)</div>
+          <div class="kpi-value" id="kpi-recebido">R$ 0,00</div>
+          <div class="kpi-label" id="kpi-recebido-count">0 serviços</div>
+        </div>
+        <div class="kpi-card warning">
+          <div class="kpi-label">Créditos</div>
+          <div class="kpi-value" id="kpi-creditos">R$ 0,00</div>
+          <div class="kpi-label" id="kpi-creditos-count">0 clientes</div>
+        </div>
+        <div class="kpi-card info">
+          <div class="kpi-label">Total (Mês)</div>
+          <div class="kpi-value" id="kpi-total">R$ 0,00</div>
+          <div class="kpi-label" id="kpi-total-count">0 atendimentos</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">📈 Relatório Detalhado</h3>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-outline" id="btn-exportar-dados">📤 Exportar Dados</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-outline" id="btn-importar-dados">📥 Importar Dados</button>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 12px;">
+          <div class="col">
+            <button class="btn btn-warning" id="btn-relatorio-mensal">📊 Relatório Mensal</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-info" id="btn-clientes-fieis">⭐ Clientes Fiéis</button>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-title">⏰ Próximos Lembretes</h2>
+      <div id="lista-lembretes" class="list">
+        <div class="empty-state">
+          <div class="empty-icon">⏰</div>
+          <div class="empty-text">Nenhum lembrete agendado</div>
+          <div class="empty-subtext">Os lembretes aparecerão automaticamente</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção Configurações -->
+    <section id="configuracoes" class="section">
+      <h2 class="section-title">⚙️ Configurações do App</h2>
+      
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">🔧 Preferências</h3>
+        
+        <div class="form-group">
+          <label class="form-label">Nome do Seu Negócio</label>
+          <input type="text" class="form-input" id="config-nome-negocio" placeholder="Ex: Espaço Beleza Maria">
+        </div>
+        
+        <div class="row">
+          <div class="col">
+            <label class="form-label">Moeda</label>
+            <select class="form-select" id="config-moeda">
+              <option value="BRL">Real (R$)</option>
+              <option value="USD">Dólar (US$)</option>
+              <option value="EUR">Euro (€)</option>
+            </select>
+          </div>
+          <div class="col">
+            <label class="form-label">Idioma</label>
+            <select class="form-select" id="config-idioma">
+              <option value="pt-BR">Português (BR)</option>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">
+            <input type="checkbox" id="config-lembretes" style="margin-right: 8px;">
+            Ativar lembretes automáticos
+          </label>
+        </div>
+        
+        <button class="btn btn-primary" id="btn-salvar-config">💾 Salvar Configurações</button>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">🛡️ Backup e Segurança</h3>
+        
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-success" id="btn-backup-completo">💾 Backup Completo</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-warning" id="btn-restaurar-backup">🔄 Restaurar Backup</button>
+          </div>
+        </div>
+        
+        <div style="margin-top: 16px;">
+          <button class="btn btn-danger" id="btn-limpar-dados">🗑️ Limpar Todos os Dados</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">ℹ️ Sobre o App</h3>
+        <p><strong>Versão:</strong> 2.0.0</p>
+        <p><strong>Desenvolvido para:</strong> Profissionais de manicure e pedicure</p>
+        <p><strong>Recursos:</strong> Gestão completa de clientes, serviços, finanças e agendamentos</p>
+        <p class="text-muted" style="margin-top: 12px; font-size: 0.9rem;">
+          💡 Dica: Faça backup regularmente para não perder seus dados!
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal Atendimento -->
+  <div id="modal-atendimento" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🎯 Novo Atendimento</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-atendimento">
+          <input type="hidden" id="atendimento-cliente-id">
+          
+          <div class="form-group">
+            <label class="form-label">Cliente</label>
+            <div id="atendimento-cliente-info" style="padding: 12px; background: #f8f9fa; border-radius: 8px; font-weight: 600;"></div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Data do Atendimento *</label>
+            <input type="datetime-local" class="form-input" id="atendimento-data" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Serviços Prestados *</label>
+            <div id="lista-servicos-modal" class="list">
+              <!-- Serviços serão carregados aqui -->
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Valor Total</label>
+            <input type="text" class="form-input" id="atendimento-valor-total" readonly style="font-weight: 700; font-size: 1.2rem;">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Status do Pagamento</label>
+            <select class="form-select" id="atendimento-status-pagamento">
+              <option value="pendente">⏳ Pendente</option>
+              <option value="pago">✅ Pago</option>
+              <option value="parcial">🔶 Parcialmente Pago</option>
+              <option value="credito">💳 Usar Crédito</option>
+            </select>
+          </div>
+          
+          <div id="grupo-valor-pago" class="form-group d-none">
+            <label class="form-label">Valor Pago (R$)</label>
+            <input type="number" class="form-input" id="atendimento-valor-pago" step="0.01" min="0">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Observações</label>
+            <textarea class="form-textarea" id="atendimento-observacoes" placeholder="Detalhes do atendimento..." rows="3"></textarea>
+          </div>
+          
+          <div class="row">
+            <div class="col">
+              <button type="submit" class="btn btn-success">💾 Salvar Atendimento</button>
+            </div>
+            <div class="col">
+              <button type="button" class="btn btn-outline" id="btn-cancelar-atendimento">❌ Cancelar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detalhes Cliente -->
+  <div id="modal-detalhes-cliente" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">👤 Detalhes do Cliente</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="detalhes-cliente-conteudo">
+          <!-- Conteúdo será carregado aqui -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+  // =============================================
+  // APLICAÇÃO MANICURE - VERSÃO 2.0
+  // =============================================
+
+  // Configuração inicial
+  const CONFIG = {
+    appName: 'Manicure Pro',
+    version: '2.0.0',
+    currency: 'BRL',
+    language: 'pt-BR'
+  };
+
+  // Estado da aplicação
+  let state = {
+    clientes: [],
+    servicos: [],
+    atendimentos: [],
+    config: {
+      nomeNegocio: 'Meu Espaço Beleza',
+      moeda: 'BRL',
+      idioma: 'pt-BR',
+      lembretes: true
+    }
+  };
+
+  // Elementos DOM
+  const DOM = {
+    // Navegação
+    navBtns: document.querySelectorAll('.nav-btn'),
+    sections: document.querySelectorAll('.section'),
+    
+    // Formulários
+    formCliente: document.getElementById('form-cliente'),
+    formServico: document.getElementById('form-servico'),
+    formAtendimento: document.getElementById('form-atendimento'),
+    
+    // Listas
+    listaClientes: document.getElementById('lista-clientes'),
+    listaServicos: document.getElementById('lista-servicos'),
+    
+    // Modais
+    modals: document.querySelectorAll('.modal'),
+    
+    // KPIs
+    kpiPendente: document.getElementById('kpi-pendente'),
+    kpiRecebido: document.getElementById('kpi-recebido'),
+    kpiCreditos: document.getElementById('kpi-creditos'),
+    kpiTotal: document.getElementById('kpi-total')
+  };
+
+  // =============================================
+  // FUNÇÕES UTILITÁRIAS
+  // =============================================
+
+  // Formatação de valores
+  const formatadores = {
+    moeda: (valor, moeda = 'BRL') => {
+      return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: moeda
+      }).format(valor || 0);
+    },
+    
+    data: (dataISO) => {
+      return new Date(dataISO).toLocaleDateString('pt-BR');
+    },
+    
+    dataHora: (dataISO) => {
+      return new Date(dataISO).toLocaleString('pt-BR');
+    },
+    
+    telefone: (telefone) => {
+      if (!telefone) return 'Não informado';
+      const cleaned = telefone.replace(/\D/g, '');
+      if (cleaned.length === 11) {
+        return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      }
+      return telefone;
+    }
+  };
+
+  // Geração de IDs únicos
+  const gerarId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  };
+
+  // Validação de dados
+  const validadores = {
+    email: (email) => {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    },
+    
+    telefone: (telefone) => {
+      const cleaned = telefone.replace(/\D/g, '');
+      return cleaned.length >= 10 && cleaned.length <= 11;
+    },
+    
+    required: (valor) => {
+      return valor && valor.toString().trim().length > 0;
+    }
+  };
+
+  // =============================================
+  // GERENCIAMENTO DE ESTADO (LOCALSTORAGE)
+  // =============================================
+
+  const storage = {
+    salvar: () => {
+      try {
+        localStorage.setItem('manicureApp_data', JSON.stringify(state));
+        return true;
+      } catch (error) {
+        console.error('Erro ao salvar dados:', error);
+        mostrarToast('Erro ao salvar dados!', 'error');
+        return false;
+      }
+    },
+    
+    carregar: () => {
+      try {
+        const dados = localStorage.getItem('manicureApp_data');
+        if (dados) {
+          const parsed = JSON.parse(dados);
+          // Migração de versões antigas
+          state = { ...state, ...parsed };
+          return true;
+        }
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      }
+      return false;
+    },
+    
+    limpar: () => {
+      try {
+        localStorage.removeItem('manicureApp_data');
+        state = {
+          clientes: [],
+          servicos: [],
+          atendimentos: [],
+          config: state.config // Mantém as configurações
+        };
+        return true;
+      } catch (error) {
+        console.error('Erro ao limpar dados:', error);
+        return false;
+      }
+    },
+    
+    exportar: () => {
+      const dados = {
+        ...state,
+        exportadoEm: new Date().toISOString(),
+        versao: CONFIG.version
+      };
+      
+      const blob = new Blob([JSON.stringify(dados, null, 2)], {
+        type: 'application/json'
+      });
+      
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `backup-manicure-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      
+      mostrarToast('Backup exportado com sucesso!', 'success');
+    },
+    
+    importar: (arquivo) => {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        try {
+          const dados = JSON.parse(e.target.result);
+          
+          // Validação básica dos dados
+          if (!dados.clientes || !dados.servicos) {
+            throw new Error('Arquivo inválido');
+          }
+          
+          state = { ...state, ...dados };
+          storage.salvar();
+          inicializarApp();
+          mostrarToast('Dados importados com sucesso!', 'success');
+        } catch (error) {
+          console.error('Erro ao importar dados:', error);
+          mostrarToast('Erro ao importar arquivo!', 'error');
+        }
+      };
+      
+      reader.readAsText(arquivo);
+    }
+  };
+
+  // =============================================
+  // GERENCIAMENTO DE INTERFACE
+  // =============================================
+
+  // Toast notifications
+  function mostrarToast(mensagem, tipo = 'info') {
+    const toast = document.getElementById('toast');
+    toast.textContent = mensagem;
+    toast.className = `toast ${tipo}`;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  // Modais
+  function abrirModal(id) {
+    document.getElementById(id).classList.add('active');
+  }
+
+  function fecharModal(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+
+  // Navegação entre abas
+  function mudarAba(abaId) {
+    // Atualizar botões de navegação
+    DOM.navBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === abaId);
+    });
+    
+    // Atualizar seções
+    DOM.sections.forEach(section => {
+      section.classList.toggle('active', section.id === abaId);
+    });
+    
+    // Atualizar dados específicos da aba
+    if (abaId === 'relatorios') {
+      atualizarDashboard();
+    }
+  }
+
+  // =============================================
+  // GERENCIAMENTO DE CLIENTES
+  // =============================================
+
+  const clientesManager = {
+    adicionar: (dados) => {
+      const novoCliente = {
+        id: gerarId(),
+        ...dados,
+        dataCadastro: new Date().toISOString(),
+        creditos: 0,
+        totalGasto: 0,
+        ultimaVisita: null
+      };
+      
+      state.clientes.push(novoCliente);
+      storage.salvar();
+      clientesManager.renderizarLista();
+      mostrarToast('Cliente adicionado com sucesso!', 'success');
+    },
+    
+    atualizar: (id, dados) => {
+      const index = state.clientes.findIndex(c => c.id === id);
+      if (index !== -1) {
+        state.clientes[index] = { ...state.clientes[index], ...dados };
+        storage.salvar();
+        clientesManager.renderizarLista();
+        mostrarToast('Cliente atualizado com sucesso!', 'success');
+      }
+    },
+    
+    remover: (id) => {
+      state.clientes = state.clientes.filter(c => c.id !== id);
+      storage.salvar();
+      clientesManager.renderizarLista();
+      mostrarToast('Cliente removido com sucesso!', 'success');
+    },
+    
+    renderizarLista: () => {
+      const container = DOM.listaClientes;
+      
+      if (state.clientes.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">👥</div>
+            <div class="empty-text">Nenhum cliente cadastrado</div>
+            <div class="empty-subtext">Adicione seu primeiro cliente usando o formulário acima</div>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = state.clientes.map(cliente => `
+        <div class="list-item" data-cliente-id="${cliente.id}">
+          <div class="client-header">
+            <div class="client-name">${cliente.nome}</div>
+            <div class="text-${cliente.creditos > 0 ? 'success' : 'muted'}">
+              ${formatadores.moeda(cliente.creditos)}
+            </div>
+          </div>
+          
+          <div class="client-meta">
+            ${cliente.telefone ? `📞 ${formatadores.telefone(cliente.telefone)}` : ''}
+            ${cliente.email ? ` ✉️ ${cliente.email}` : ''}
+            ${cliente.ultimaVisita ? `<br>🕒 Última visita: ${formatadores.data(cliente.ultimaVisita)}` : ''}
+          </div>
+          
+          <div class="client-meta">
+            📊 Total gasto: ${formatadores.moeda(cliente.totalGasto || 0)}
+            ${cliente.dataNascimento ? ` | 🎂 ${formatadores.data(cliente.dataNascimento)}` : ''}
+          </div>
+          
+          ${cliente.observacoes ? `
+            <div class="client-meta">
+              📝 ${cliente.observacoes}
+            </div>
+          ` : ''}
+          
+          <div class="client-actions">
+            <button class="btn btn-outline" onclick="abrirModalAtendimento('${cliente.id}')">
+              💅 Novo Atendimento
+            </button>
+            <button class="btn btn-info" onclick="abrirDetalhesCliente('${cliente.id}')">
+              👁️ Detalhes
+            </button>
+            <button class="btn btn-warning" onclick="adicionarCredito('${cliente.id}')">
+              💰 Crédito
+            </button>
+            <button class="btn btn-danger" onclick="confirmarRemocaoCliente('${cliente.id}')">
+              🗑️ Remover
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+  };
+
+  // =============================================
+  // GERENCIAMENTO DE SERVIÇOS
+  // =============================================
+
+  const servicosManager = {
+    adicionar: (dados) => {
+      const novoServico = {
+        id: gerarId(),
+        ...dados,
+        ativo: true,
+        dataCadastro: new Date().toISOString()
+      };
+      
+      state.servicos.push(novoServico);
+      storage.salvar();
+      servicosManager.renderizarLista();
+      mostrarToast('Serviço adicionado com sucesso!', 'success');
+    },
+    
+    atualizar: (id, dados) => {
+      const index = state.servicos.findIndex(s => s.id === id);
+      if (index !== -1) {
+        state.servicos[index] = { ...state.servicos[index], ...dados };
+        storage.salvar();
+        servicosManager.renderizarLista();
+        mostrarToast('Serviço atualizado com sucesso!', 'success');
+      }
+    },
+    
+    toggleAtivo: (id) => {
+      const index = state.servicos.findIndex(s => s.id === id);
+      if (index !== -1) {
+        state.servicos[index].ativo = !state.servicos[index].ativo;
+        storage.salvar();
+        servicosManager.renderizarLista();
+        mostrarToast('Serviço ' + (state.servicos[index].ativo ? 'ativado' : 'desativado'), 'success');
+      }
+    },
+    
+    remover: (id) => {
+      state.servicos = state.servicos.filter(s => s.id !== id);
+      storage.salvar();
+      servicosManager.renderizarLista();
+      mostrarToast('Serviço removido com sucesso!', 'success');
+    },
+    
+    renderizarLista: () => {
+      const container = DOM.listaServicos;
+      
+      if (state.servicos.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">💅</div>
+            <div class="empty-text">Nenhum serviço cadastrado</div>
+            <div class="empty-subtext">Adicione seus primeiros serviços usando o formulário acima</div>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = state.servicos.map(servico => `
+        <div class="list-item ${!servico.ativo ? 'text-muted' : ''}">
+          <div class="client-header">
+            <div class="client-name">${servico.nome}</div>
+            <div class="text-success">${formatadores.moeda(servico.preco)}</div>
+          </div>
+          
+          <div class="client-meta">
+            ${servico.categoria ? `🏷️ ${servico.categoria}` : ''}
+            ${servico.duracao ? ` | ⏱️ ${servico.duracao} min` : ''}
+            ${!servico.ativo ? ' | ❌ Inativo' : ''}
+          </div>
+          
+          ${servico.descricao ? `
+            <div class="client-meta">
+              📝 ${servico.descricao}
+            </div>
+          ` : ''}
+          
+          <div class="client-actions">
+            <button class="btn btn-outline" onclick="editarServico('${servico.id}')">
+              ✏️ Editar
+            </button>
+            <button class="btn btn-${servico.ativo ? 'warning' : 'success'}" 
+                    onclick="servicosManager.toggleAtivo('${servico.id}')">
+              ${servico.ativo ? '❌ Desativar' : '✅ Ativar'}
+            </button>
+            <button class="btn btn-danger" onclick="confirmarRemocaoServico('${servico.id}')">
+              🗑️ Remover
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+  };
+
+  // =============================================
+  // DASHBOARD E RELATÓRIOS
+  // =============================================
+
+  function atualizarDashboard() {
+    const agora = new Date();
+    const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
+    
+    // Cálculos
+    const pendente = state.atendimentos
+      .filter(a => a.statusPagamento === 'pendente')
+      .reduce((sum, a) => sum + a.valorTotal, 0);
+    
+    const recebidoMes = state.atendimentos
+      .filter(a => new Date(a.data) >= inicioMes && a.statusPagamento === 'pago')
+      .reduce((sum, a) => sum + a.valorTotal, 0);
+    
+    const creditos = state.clientes.reduce((sum, c) => sum + (c.creditos || 0), 0);
+    
+    const totalMes = state.atendimentos
+      .filter(a => new Date(a.data) >= inicioMes)
+      .reduce((sum, a) => sum + a.valorTotal, 0);
+    
+    // Atualizar KPIs
+    DOM.kpiPendente.textContent = formatadores.moeda(pendente);
+    DOM.kpiRecebido.textContent = formatadores.moeda(recebidoMes);
+    DOM.kpiCreditos.textContent = formatadores.moeda(creditos);
+    DOM.kpiTotal.textContent = formatadores.moeda(totalMes);
+  }
+
+  // =============================================
+  // INICIALIZAÇÃO DA APLICAÇÃO
+  // =============================================
+
+  function inicializarApp() {
+    // Carregar dados salvos
+    storage.carregar();
+    
+    // Configurar event listeners
+    configurarEventListeners();
+    
+    // Renderizar dados iniciais
+    clientesManager.renderizarLista();
+    servicosManager.renderizarLista();
+    atualizarDashboard();
+    
+    // Mostrar mensagem de boas-vindas
+    setTimeout(() => {
+      mostrarToast(`Bem-vindo ao ${CONFIG.appName}!`, 'success');
+    }, 1000);
+  }
+
+  function configurarEventListeners() {
+    // Navegação
+    DOM.navBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        mudarAba(btn.dataset.tab);
+      });
+    });
+    
+    // Formulário de cliente
+    DOM.formCliente.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const dados = {
+        nome: document.getElementById('cliente-nome').value.trim(),
+        telefone: document.getElementById('cliente-telefone').value.trim(),
+        email: document.getElementById('cliente-email').value.trim(),
+        dataNascimento: document.getElementById('cliente-nascimento').value,
+        observacoes: document.getElementById('cliente-observacoes').value.trim()
+      };
+      
+      if (!validadores.required(dados.nome)) {
+        mostrarToast('Por favor, informe o nome do cliente!', 'error');
+        return;
+      }
+      
+      clientesManager.adicionar(dados);
+      DOM.formCliente.reset();
+    });
+    
+    // Formulário de serviço
+    DOM.formServico.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const dados = {
+        nome: document.getElementById('servico-nome').value.trim(),
+        preco: parseFloat(document.getElementById('servico-preco').value),
+        duracao: parseInt(document.getElementById('servico-duracao').value) || null,
+        categoria: document.getElementById('servico-categoria').value,
+        descricao: document.getElementById('servico-descricao').value.trim()
+      };
+      
+      if (!validadores.required(dados.nome) || !dados.preco) {
+        mostrarToast('Por favor, preencha nome e preço do serviço!', 'error');
+        return;
+      }
+      
+      servicosManager.adicionar(dados);
+      DOM.formServico.reset();
+    });
+    
+    // Fechar modais
+    document.querySelectorAll('.modal-close').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        fecharModal(e.target.closest('.modal').id);
+      });
+    });
+    
+    // Backup e exportação
+    document.getElementById('btn-exportar-dados').addEventListener('click', storage.exportar);
+    
+    document.getElementById('btn-importar-dados').addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = (e) => {
+        if (e.target.files[0]) {
+          storage.importar(e.target.files[0]);
+        }
+      };
+      input.click();
+    });
+  }
+
+  // =============================================
+  // FUNÇÕES GLOBAIS (para uso nos event handlers)
+  // =============================================
+
+  window.abrirModalAtendimento = (clienteId) => {
+    const cliente = state.clientes.find(c => c.id === clienteId);
+    if (!cliente) return;
+    
+    document.getElementById('atendimento-cliente-id').value = clienteId;
+    document.getElementById('atendimento-cliente-info').textContent = 
+      `${cliente.nome} ${cliente.telefone ? `- ${formatadores.telefone(cliente.telefone)}` : ''}`;
+    
+    document.getElementById('atendimento-data').value = 
+      new Date().toISOString().slice(0, 16);
+    
+    // Carregar serviços
+    const servicosContainer = document.getElementById('lista-servicos-modal');
+    servicosContainer.innerHTML = state.servicos
+      .filter(s => s.ativo)
+      .map(servico => `
+        <div class="service-option">
+          <input type="checkbox" class="service-checkbox" 
+                 value="${servico.id}" 
+                 data-preco="${servico.preco}"
+                 onchange="calcularTotalAtendimento()">
+          <div class="service-info">
+            <div class="service-name">${servico.nome}</div>
+            <div class="service-price">${formatadores.moeda(servico.preco)}</div>
+          </div>
+        </div>
+      `).join('');
+    
+    abrirModal('modal-atendimento');
+  };
+
+  window.calcularTotalAtendimento = () => {
+    const checkboxes = document.querySelectorAll('.service-checkbox:checked');
+    const total = Array.from(checkboxes).reduce((sum, cb) => {
+      return sum + parseFloat(cb.dataset.preco);
+    }, 0);
+    
+    document.getElementById('atendimento-valor-total').value = 
+      formatadores.moeda(total);
+  };
+
+  // Inicializar a aplicação quando o DOM estiver pronto
+  document.addEventListener('DOMContentLoaded', inicializarApp);
+
+  </script>
+</body>
+</html>

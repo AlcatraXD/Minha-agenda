@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 <title>Manicure Pro - Gestão Elegante</title>
 <meta name="theme-color" content="#ec4899">
+<meta name="description" content="Sistema completo de gestão para profissionais de manicure e beleza">
+<link rel="manifest" href="manifest.json">
 
 <style>
   :root {
     --primary: #ec4899; --primary-dark: #db2777; 
     --primary-light: #fdf2f8;
+    --secondary: #8b5cf6; --secondary-dark: #7c3aed;
     --success: #10b981; --success-dark: #059669;
     --danger: #ef4444; --danger-dark: #dc2626;
     --warning: #f59e0b; --warning-dark: #d97706;
@@ -19,17 +22,19 @@
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --radius: 16px;
     --radius-sm: 12px;
-    --gradient: linear-gradient(135deg, #ec4899, #db2777);
-    --gradient-light: linear-gradient(135deg, #fdf2f8, #fce7f3);
+    --gradient: linear-gradient(135deg, #ec4899, #8b5cf6);
+    --gradient-light: linear-gradient(135deg, #fdf2f8, #f3f4f6);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   [data-theme="dark"] {
     --primary: #f472b6; --primary-dark: #ec4899;
+    --secondary: #a78bfa; --secondary-dark: #8b5cf6;
     --primary-light: #1f2937;
     --bg: #111827; --card: #1f2937; --text: #f9fafb; --muted: #9ca3af; --border: #374151;
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    --gradient: linear-gradient(135deg, #f472b6, #ec4899);
+    --gradient: linear-gradient(135deg, #f472b6, #a78bfa);
     --gradient-light: linear-gradient(135deg, #1f2937, #374151);
   }
 
@@ -47,7 +52,7 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     line-height: 1.6;
     min-height: 100vh;
-    transition: all 0.3s ease;
+    transition: var(--transition);
   }
 
   /* Header Moderno */
@@ -104,7 +109,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     font-weight: 600;
   }
 
@@ -131,6 +136,12 @@
     z-index: 100;
     padding: 0 16px;
     box-shadow: var(--shadow);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .app-nav::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-btn {
@@ -141,13 +152,15 @@
     font-weight: 600;
     cursor: pointer;
     color: var(--muted);
-    transition: all 0.3s ease;
+    transition: var(--transition);
     font-size: 0.95rem;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+    min-width: 120px;
+    white-space: nowrap;
   }
 
   .nav-btn::before {
@@ -159,7 +172,7 @@
     height: 3px;
     background: var(--primary);
     border-radius: 3px 3px 0 0;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     transform: translateX(-50%);
   }
 
@@ -212,7 +225,7 @@
     box-shadow: var(--shadow);
     padding: 24px;
     margin-bottom: 20px;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     border: 1px solid var(--border);
   }
 
@@ -258,7 +271,7 @@
     border: 2px solid var(--border);
     border-radius: var(--radius-sm);
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     background: var(--card);
     color: var(--text);
     font-family: inherit;
@@ -283,7 +296,7 @@
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     text-decoration: none;
     min-height: 56px;
     position: relative;
@@ -385,7 +398,7 @@
     border-radius: var(--radius);
     padding: 20px;
     box-shadow: var(--shadow);
-    transition: all 0.3s ease;
+    transition: var(--transition);
     border: 1px solid var(--border);
     position: relative;
     overflow: hidden;
@@ -516,7 +529,7 @@
     padding: 20px;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: var(--transition);
   }
 
   .modal.active {
@@ -532,7 +545,7 @@
     max-height: 90vh;
     overflow-y: auto;
     transform: scale(0.9) translateY(20px);
-    transition: all 0.3s ease;
+    transition: var(--transition);
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--border);
   }
@@ -564,7 +577,7 @@
     color: var(--muted);
     padding: 8px;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: var(--transition);
   }
 
   .modal-close:hover {
@@ -585,7 +598,7 @@
     border-radius: var(--radius-sm);
     margin-bottom: 12px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     background: var(--card);
   }
 
@@ -653,7 +666,7 @@
     border-radius: var(--radius-sm);
     z-index: 2000;
     font-size: 0.95rem;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     max-width: 400px;
     text-align: center;
     box-shadow: var(--shadow-lg);
@@ -700,7 +713,7 @@
     padding: 16px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     font-weight: 600;
     font-size: 0.95rem;
     color: var(--text);
@@ -803,7 +816,7 @@
     background: var(--gradient);
     border-radius: 6px 6px 0 0;
     position: relative;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     cursor: pointer;
   }
 
@@ -869,6 +882,94 @@
     margin: 20px 0;
   }
 
+  /* Busca e Filtros */
+  .search-container {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .search-input {
+    padding-left: 45px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+  }
+
+  /* Agendamentos */
+  .calendar-container {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+
+  .calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    background: var(--bg);
+  }
+
+  .calendar-day:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .calendar-day.active {
+    background: var(--gradient);
+    color: white;
+  }
+
+  .calendar-day.has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+  }
+
+  /* Loading */
+  .loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
   /* Responsividade */
   @media (max-width: 768px) {
     .app-main { padding: 16px; }
@@ -884,6 +985,10 @@
       margin-top: 12px; 
     }
     .app-header { padding: 16px 20px; }
+    .calendar-grid {
+      grid-template-columns: repeat(7, 1fr);
+      font-size: 0.8rem;
+    }
   }
 
   @media (max-width: 480px) {
@@ -891,6 +996,9 @@
     .client-actions .btn { min-width: 100%; }
     .quick-actions { grid-template-columns: 1fr; }
     .export-options { grid-template-columns: 1fr; }
+    .calendar-grid {
+      gap: 4px;
+    }
   }
 </style>
 </head>
@@ -923,6 +1031,10 @@
       <span>💅</span>
       <span>Serviços</span>
     </button>
+    <button class="nav-btn" data-tab="agendamentos">
+      <span>📅</span>
+      <span>Agendamentos</span>
+    </button>
     <button class="nav-btn" data-tab="relatorios">
       <span>📊</span>
       <span>Dashboard</span>
@@ -938,6 +1050,11 @@
     <!-- Seção Clientes -->
     <section id="clientes" class="section active">
       <h2 class="section-title">👥 Gestão de Clientes</h2>
+      
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="form-input search-input" id="busca-cliente" placeholder="Buscar cliente por nome...">
+      </div>
       
       <div class="quick-actions">
         <div class="quick-action-btn" data-filter="todas">
@@ -960,6 +1077,14 @@
           <div class="form-group">
             <label class="form-label">Nome da Cliente *</label>
             <input type="text" class="form-input" id="cliente-nome" placeholder="Ex: Maria Silva" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Telefone</label>
+            <input type="tel" class="form-input" id="cliente-telefone" placeholder="Ex: (11) 99999-9999">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Observações</label>
+            <textarea class="form-textarea" id="cliente-observacoes" placeholder="Alergias, preferências, etc." rows="3"></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-block">💾 Salvar Cliente</button>
         </form>
@@ -1015,13 +1140,22 @@
             <input type="number" class="form-input" id="servico-preco" placeholder="Ex: 35.00" step="0.01" min="0" required>
           </div>
           <div class="form-group">
+            <label class="form-label">Duração (minutos)</label>
+            <input type="number" class="form-input" id="servico-duracao" placeholder="Ex: 60" min="5" step="5">
+          </div>
+          <div class="form-group">
             <label class="form-label">Categoria</label>
             <select class="form-select" id="servico-categoria">
               <option value="basico">Básico</option>
               <option value="completo">Completo</option>
               <option value="especial">Especial</option>
               <option value="spa">SPA</option>
+              <option value="premium">Premium</option>
             </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-textarea" id="servico-descricao" placeholder="Descreva o serviço..." rows="3"></textarea>
           </div>
           <div class="form-group">
             <label class="form-label">
@@ -1035,6 +1169,65 @@
 
       <h2 class="section-title">📦 Serviços Cadastrados</h2>
       <div id="lista-servicos" class="list"></div>
+    </section>
+
+    <!-- Seção Agendamentos -->
+    <section id="agendamentos" class="section">
+      <h2 class="section-title">📅 Agendamentos</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="agendamentos-hoje">0</div>
+          <div class="stat-label">Agendamentos Hoje</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="agendamentos-semana">0</div>
+          <div class="stat-label">Esta Semana</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="taxa-comparecimento">0%</div>
+          <div class="stat-label">Taxa de Comparecimento</div>
+        </div>
+      </div>
+
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <button class="btn btn-outline" id="prev-month">‹</button>
+          <h3 id="current-month">Março 2024</h3>
+          <button class="btn btn-outline" id="next-month">›</button>
+        </div>
+        <div class="calendar-grid" id="calendar">
+          <!-- Gerado dinamicamente -->
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom: 20px; color: var(--primary);">➕ Novo Agendamento</h3>
+        <form id="form-agendamento">
+          <div class="form-group">
+            <label class="form-label">Cliente *</label>
+            <select class="form-select" id="agendamento-cliente" required>
+              <option value="">Selecione uma cliente</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Data e Hora *</label>
+            <input type="datetime-local" class="form-input" id="agendamento-datahora" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Serviços *</label>
+            <div id="lista-servicos-agendamento" class="list"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Observações</label>
+            <textarea class="form-textarea" id="agendamento-observacoes" placeholder="Observações sobre o agendamento..." rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-success btn-block">📅 Agendar</button>
+        </form>
+      </div>
+
+      <h2 class="section-title">📋 Próximos Agendamentos</h2>
+      <div id="lista-agendamentos" class="list"></div>
     </section>
 
     <!-- Seção Dashboard -->
@@ -1053,6 +1246,10 @@
         <div class="kpi-card warning">
           <div class="kpi-label">Total (Mês)</div>
           <div class="kpi-value" id="kpi-total">R$ 0,00</div>
+        </div>
+        <div class="kpi-card info">
+          <div class="kpi-label">Clientes (Mês)</div>
+          <div class="kpi-value" id="kpi-clientes">0</div>
         </div>
       </div>
 
@@ -1101,6 +1298,10 @@
         <div class="stat-card">
           <div class="stat-value" id="ticket-medio">R$ 0,00</div>
           <div class="stat-label">Ticket Médio</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="clientes-fieis">0</div>
+          <div class="stat-label">Clientes Fiéis</div>
         </div>
       </div>
     </section>
@@ -1163,7 +1364,8 @@
         <div class="client-meta">
           <strong>Armazenamento usado:</strong> <span id="armazenamento-usado">0 KB</span><br>
           <strong>Total de registros:</strong> <span id="total-registros">0</span><br>
-          <strong>Backups automáticos:</strong> <span id="backups-realizados">0</span>
+          <strong>Backups automáticos:</strong> <span id="backups-realizados">0</span><br>
+          <strong>Versão:</strong> <span id="versao-app">2.0.0</span>
         </div>
       </div>
     </section>
@@ -1196,6 +1398,11 @@
           </div>
           
           <div class="form-group">
+            <label class="form-label">Observações</label>
+            <textarea class="form-textarea" id="atendimento-observacoes" placeholder="Observações sobre o atendimento..." rows="3"></textarea>
+          </div>
+          
+          <div class="form-group">
             <label class="form-label">Valor Total</label>
             <input type="text" class="form-input" id="atendimento-valor-total" readonly style="font-weight: 700; font-size: 1.3rem; background: var(--primary-light);">
           </div>
@@ -1205,6 +1412,7 @@
             <select class="form-select" id="atendimento-status-pagamento">
               <option value="pendente">⏳ Pendente</option>
               <option value="pago">✅ Pago</option>
+              <option value="parcial">🔄 Parcial</option>
             </select>
           </div>
           
@@ -1221,21 +1429,20 @@
 
   <script>
   // =============================================
-  // APLICAÇÃO MANICURE - INTERFACE MODERNIZADA
+  // APLICAÇÃO MANICURE - VERSÃO MELHORADA 2.0
   // =============================================
-
-  // O JavaScript permanece exatamente o mesmo da versão anterior
-  // Apenas a interface visual foi atualizada
 
   // Estado da aplicação
   const state = {
     clientes: [],
     servicos: [],
     atendimentos: [],
+    agendamentos: [],
     config: {
       tema: 'light',
       backupAutomatico: true,
-      ultimoBackup: null
+      ultimoBackup: null,
+      versao: '2.0.0'
     }
   };
 
@@ -1243,10 +1450,33 @@
   const utils = {
     formatarMoeda: (valor) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor || 0),
     formatarData: (dataISO) => dataISO ? new Date(dataISO).toLocaleDateString('pt-BR') : 'Nunca',
+    formatarDataHora: (dataISO) => dataISO ? new Date(dataISO).toLocaleString('pt-BR') : 'Nunca',
     gerarId: () => Date.now().toString() + Math.random().toString(36).substr(2, 5),
     calcularDiferencaPercentual: (atual, anterior) => {
       if (!anterior || anterior === 0) return 100;
       return ((atual - anterior) / anterior * 100).toFixed(1);
+    },
+    formatarTelefone: (telefone) => {
+      if (!telefone) return '';
+      const nums = telefone.replace(/\D/g, '');
+      if (nums.length === 11) {
+        return `(${nums.substring(0,2)}) ${nums.substring(2,7)}-${nums.substring(7)}`;
+      }
+      if (nums.length === 10) {
+        return `(${nums.substring(0,2)}) ${nums.substring(2,6)}-${nums.substring(6)}`;
+      }
+      return telefone;
+    },
+    debounce: (func, wait) => {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
     }
   };
 
@@ -1268,8 +1498,6 @@
     },
 
     mudarAba(abaId) {
-      console.log('Mudando para aba:', abaId);
-      
       // Remover active de todos os botões
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -1295,6 +1523,10 @@
         }
         if (abaId === 'servicos') servicos.atualizarEstatisticas();
         if (abaId === 'backup') backup.atualizarStatus();
+        if (abaId === 'agendamentos') {
+          agendamentos.atualizarEstatisticas();
+          agendamentos.criarCalendario();
+        }
       }
     },
 
@@ -1329,6 +1561,16 @@
         icon.textContent = '☀️';
         text.textContent = 'Claro';
       }
+    },
+
+    mostrarLoading(btn) {
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<div class="loading"></div>';
+      btn.disabled = true;
+      return () => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      };
     }
   };
 
@@ -1339,14 +1581,40 @@
       if (dados) {
         const dadosCarregados = JSON.parse(dados);
         Object.assign(state, dadosCarregados);
+        
+        // Migração de versão se necessário
+        if (!state.config.versao || state.config.versao !== '2.0.0') {
+          this.migrarDados();
+        }
       } else {
         // Dados iniciais
         state.servicos = [
-          { id: '1', nome: "Manicure Simples", preco: 25.00, categoria: "basico", ativo: true, vendas: 0 },
-          { id: '2', nome: "Pedicure Simples", preco: 30.00, categoria: "basico", ativo: true, vendas: 0 },
-          { id: '3', nome: "Manicure Completa", preco: 40.00, categoria: "completo", ativo: true, vendas: 0 }
+          { id: '1', nome: "Manicure Simples", preco: 25.00, categoria: "basico", ativo: true, vendas: 0, duracao: 30 },
+          { id: '2', nome: "Pedicure Simples", preco: 30.00, categoria: "basico", ativo: true, vendas: 0, duracao: 45 },
+          { id: '3', nome: "Manicure Completa", preco: 40.00, categoria: "completo", ativo: true, vendas: 0, duracao: 60 },
+          { id: '4', nome: "SPA dos Pés", preco: 50.00, categoria: "spa", ativo: true, vendas: 0, duracao: 75 }
         ];
       }
+    },
+
+    migrarDados() {
+      // Adicionar campos novos para dados antigos
+      state.clientes.forEach(cliente => {
+        if (!cliente.telefone) cliente.telefone = '';
+        if (!cliente.observacoes) cliente.observacoes = '';
+      });
+      
+      state.servicos.forEach(servico => {
+        if (!servico.duracao) servico.duracao = 60;
+        if (!servico.descricao) servico.descricao = '';
+      });
+      
+      state.atendimentos.forEach(atendimento => {
+        if (!atendimento.observacoes) atendimento.observacoes = '';
+      });
+      
+      state.config.versao = '2.0.0';
+      this.salvar();
     },
 
     salvar() {
@@ -1411,10 +1679,12 @@
 
   // Clientes
   const clientes = {
-    adicionar(nome) {
+    adicionar(dados) {
       const novaCliente = {
         id: utils.gerarId(),
-        nome: nome,
+        nome: dados.nome,
+        telefone: dados.telefone || '',
+        observacoes: dados.observacoes || '',
         dataCadastro: new Date().toISOString(),
         totalGasto: 0,
         totalAtendimentos: 0,
@@ -1423,17 +1693,31 @@
       state.clientes.push(novaCliente);
       storage.salvar();
       this.renderizar();
+      agendamentos.atualizarSelectClientes();
       ui.mostrarToast('Cliente adicionada com sucesso!');
       return novaCliente.id;
     },
 
     remover(id) {
-      if (confirm('Tem certeza que deseja remover esta cliente?')) {
+      if (confirm('Tem certeza que deseja remover esta cliente e todos os seus agendamentos?')) {
         state.clientes = state.clientes.filter(c => c.id !== id);
+        // Remover agendamentos da cliente
+        state.agendamentos = state.agendamentos.filter(a => a.clienteId !== id);
         storage.salvar();
         this.renderizar();
+        agendamentos.atualizarSelectClientes();
+        agendamentos.renderizar();
         ui.mostrarToast('Cliente removida com sucesso!');
       }
+    },
+
+    buscar(nome) {
+      if (!nome) return state.clientes;
+      const termo = nome.toLowerCase();
+      return state.clientes.filter(cliente => 
+        cliente.nome.toLowerCase().includes(termo) ||
+        (cliente.telefone && cliente.telefone.includes(termo))
+      );
     },
 
     renderizar(lista = state.clientes) {
@@ -1447,15 +1731,20 @@
       container.innerHTML = lista.map(cliente => `
         <div class="list-item">
           <div class="client-header">
-            <div class="client-name">${cliente.nome}</div>
+            <div>
+              <div class="client-name">${cliente.nome}</div>
+              ${cliente.telefone ? `<div class="client-meta">📞 ${utils.formatarTelefone(cliente.telefone)}</div>` : ''}
+            </div>
             <div class="text-success">${utils.formatarMoeda(cliente.totalGasto)}</div>
           </div>
           <div class="client-meta">
             ${cliente.ultimaVisita ? `🕒 ${utils.formatarData(cliente.ultimaVisita)}` : 'Nunca atendida'}
             | 👥 ${cliente.totalAtendimentos || 0} atendimentos
+            ${cliente.observacoes ? `<br>📝 ${cliente.observacoes.substring(0, 50)}${cliente.observacoes.length > 50 ? '...' : ''}` : ''}
           </div>
           <div class="client-actions">
             <button class="btn btn-outline" onclick="atendimentos.iniciar('${cliente.id}')">💅 Atendimento</button>
+            <button class="btn btn-info" onclick="agendamentos.iniciar('${cliente.id}')">📅 Agendar</button>
             <button class="btn btn-danger" onclick="clientes.remover('${cliente.id}')">🗑️ Remover</button>
           </div>
         </div>
@@ -1469,7 +1758,9 @@
           listaFiltrada = state.clientes.filter(c => (c.totalAtendimentos || 0) >= 3);
           break;
         case 'recentes':
-          listaFiltrada = state.clientes.sort((a, b) => new Date(b.dataCadastro) - new Date(a.dataCadastro)).slice(0, 5);
+          const umaSemanaAtras = new Date();
+          umaSemanaAtras.setDate(umaSemanaAtras.getDate() - 7);
+          listaFiltrada = state.clientes.filter(c => new Date(c.dataCadastro) >= umaSemanaAtras);
           break;
         default:
           listaFiltrada = state.clientes;
@@ -1486,12 +1777,15 @@
         id: utils.gerarId(),
         ...dados,
         ativo: document.getElementById('servico-ativo').checked,
-        vendas: 0
+        vendas: 0,
+        duracao: parseInt(dados.duracao) || 60,
+        descricao: dados.descricao || ''
       };
       state.servicos.push(novoServico);
       storage.salvar();
       this.renderizar();
       this.atualizarEstatisticas();
+      agendamentos.atualizarSelectServicos();
       ui.mostrarToast('Serviço adicionado com sucesso!');
     },
 
@@ -1501,6 +1795,7 @@
         storage.salvar();
         this.renderizar();
         this.atualizarEstatisticas();
+        agendamentos.atualizarSelectServicos();
         ui.mostrarToast('Serviço removido com sucesso!');
       }
     },
@@ -1512,6 +1807,7 @@
         storage.salvar();
         this.renderizar();
         this.atualizarEstatisticas();
+        agendamentos.atualizarSelectServicos();
         ui.mostrarToast(`Serviço ${servico.ativo ? 'ativado' : 'desativado'}!`);
       }
     },
@@ -1527,11 +1823,15 @@
       container.innerHTML = lista.map(servico => `
         <div class="list-item ${!servico.ativo ? 'text-muted' : ''}">
           <div class="client-header">
-            <div class="client-name">${servico.nome}</div>
+            <div>
+              <div class="client-name">${servico.nome}</div>
+              ${servico.descricao ? `<div class="client-meta">${servico.descricao}</div>` : ''}
+            </div>
             <div class="text-success">${utils.formatarMoeda(servico.preco)}</div>
           </div>
           <div class="client-meta">
             <span class="service-tag">${servico.categoria}</span>
+            | ⏱️ ${servico.duracao} min
             ${servico.vendas ? `| 🎯 ${servico.vendas} vendas` : ''}
             ${!servico.ativo ? '| ❌ Inativo' : ''}
           </div>
@@ -1581,6 +1881,7 @@
       document.getElementById('atendimento-cliente-id').value = clienteId;
       document.getElementById('atendimento-cliente-info').textContent = cliente.nome;
       document.getElementById('atendimento-data').value = new Date().toISOString().split('T')[0];
+      document.getElementById('atendimento-observacoes').value = '';
       
       const servicosContainer = document.getElementById('lista-servicos-modal');
       servicosContainer.innerHTML = state.servicos
@@ -1638,6 +1939,251 @@
     }
   };
 
+  // Agendamentos
+  const agendamentos = {
+    currentDate: new Date(),
+    
+    adicionar(dados) {
+      const novoAgendamento = {
+        id: utils.gerarId(),
+        ...dados,
+        status: 'agendado',
+        dataCriacao: new Date().toISOString()
+      };
+      state.agendamentos.push(novoAgendamento);
+      storage.salvar();
+      this.renderizar();
+      this.atualizarEstatisticas();
+      ui.mostrarToast('Agendamento realizado com sucesso!');
+      return novoAgendamento.id;
+    },
+
+    cancelar(id) {
+      const agendamento = state.agendamentos.find(a => a.id === id);
+      if (agendamento && confirm('Tem certeza que deseja cancelar este agendamento?')) {
+        agendamento.status = 'cancelado';
+        storage.salvar();
+        this.renderizar();
+        this.atualizarEstatisticas();
+        ui.mostrarToast('Agendamento cancelado!');
+      }
+    },
+
+    concluir(id) {
+      const agendamento = state.agendamentos.find(a => a.id === id);
+      if (agendamento) {
+        agendamento.status = 'concluido';
+        storage.salvar();
+        this.renderizar();
+        this.atualizarEstatisticas();
+        ui.mostrarToast('Agendamento concluído!');
+        
+        // Oferecer para criar um atendimento
+        if (confirm('Deseja criar um atendimento para este agendamento?')) {
+          const cliente = state.clientes.find(c => c.id === agendamento.clienteId);
+          if (cliente) {
+            atendimentos.iniciar(cliente.id);
+            // Preencher automaticamente os serviços
+            setTimeout(() => {
+              agendamento.servicos.forEach(servicoId => {
+                const checkbox = document.querySelector(`.service-checkbox[value="${servicoId}"]`);
+                if (checkbox) checkbox.checked = true;
+              });
+              atendimentos.calcularTotal();
+            }, 100);
+          }
+        }
+      }
+    },
+
+    iniciar(clienteId = '') {
+      document.getElementById('agendamento-cliente').value = clienteId;
+      document.getElementById('agendamento-datahora').value = '';
+      document.getElementById('agendamento-observacoes').value = '';
+      
+      // Limpar seleção de serviços
+      document.querySelectorAll('#lista-servicos-agendamento input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+      });
+    },
+
+    atualizarSelectClientes() {
+      const select = document.getElementById('agendamento-cliente');
+      select.innerHTML = '<option value="">Selecione uma cliente</option>';
+      state.clientes.forEach(cliente => {
+        const option = document.createElement('option');
+        option.value = cliente.id;
+        option.textContent = cliente.nome;
+        select.appendChild(option);
+      });
+    },
+
+    atualizarSelectServicos() {
+      const container = document.getElementById('lista-servicos-agendamento');
+      container.innerHTML = state.servicos
+        .filter(s => s.ativo)
+        .map(servico => `
+          <div class="service-option">
+            <input type="checkbox" class="service-checkbox" value="${servico.id}" data-duracao="${servico.duracao}">
+            <div class="service-info">
+              <div class="service-name">${servico.nome}</div>
+              <div class="service-price">${utils.formatarMoeda(servico.preco)} - ⏱️ ${servico.duracao} min</div>
+            </div>
+          </div>
+        `).join('');
+    },
+
+    renderizar() {
+      const container = document.getElementById('lista-agendamentos');
+      const agora = new Date();
+      const agendamentosFuturos = state.agendamentos
+        .filter(a => a.status === 'agendado' && new Date(a.dataHora) >= agora)
+        .sort((a, b) => new Date(a.dataHora) - new Date(b.dataHora));
+      
+      if (agendamentosFuturos.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Nenhum agendamento futuro</div><div class="empty-subtext">Agende um novo horário usando o formulário acima</div></div>';
+        return;
+      }
+      
+      container.innerHTML = agendamentosFuturos.map(agendamento => {
+        const cliente = state.clientes.find(c => c.id === agendamento.clienteId);
+        const servicosNomes = agendamento.servicos.map(id => {
+          const servico = state.servicos.find(s => s.id === id);
+          return servico ? servico.nome : 'Serviço não encontrado';
+        });
+        
+        return `
+          <div class="list-item">
+            <div class="client-header">
+              <div class="client-name">${cliente ? cliente.nome : 'Cliente não encontrado'}</div>
+              <div class="text-info">${utils.formatarDataHora(agendamento.dataHora)}</div>
+            </div>
+            <div class="client-meta">
+              📋 ${servicosNomes.join(', ')}
+              ${agendamento.observacoes ? `<br>📝 ${agendamento.observacoes}` : ''}
+            </div>
+            <div class="client-actions">
+              <button class="btn btn-success" onclick="agendamentos.concluir('${agendamento.id}')">✅ Concluir</button>
+              <button class="btn btn-warning" onclick="agendamentos.cancelar('${agendamento.id}')">❌ Cancelar</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    },
+
+    criarCalendario() {
+      const container = document.getElementById('calendar');
+      const monthTitle = document.getElementById('current-month');
+      
+      const year = this.currentDate.getFullYear();
+      const month = this.currentDate.getMonth();
+      
+      // Atualizar título do mês
+      monthTitle.textContent = this.currentDate.toLocaleDateString('pt-BR', { 
+        month: 'long', 
+        year: 'numeric' 
+      });
+      
+      // Obter primeiro dia do mês e último dia
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const daysInMonth = lastDay.getDate();
+      
+      // Dias da semana
+      const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      let calendarHTML = '';
+      
+      // Adicionar cabeçalho dos dias da semana
+      weekdays.forEach(day => {
+        calendarHTML += `<div class="calendar-day" style="font-weight: bold; background: transparent;">${day}</div>`;
+      });
+      
+      // Espaços vazios antes do primeiro dia
+      const startingDay = firstDay.getDay();
+      for (let i = 0; i < startingDay; i++) {
+        calendarHTML += '<div class="calendar-day"></div>';
+      }
+      
+      // Dias do mês
+      const hoje = new Date();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const currentDate = new Date(year, month, day);
+        const hasEvent = state.agendamentos.some(a => {
+          const agendamentoDate = new Date(a.dataHora);
+          return agendamentoDate.getDate() === day && 
+                 agendamentoDate.getMonth() === month && 
+                 agendamentoDate.getFullYear() === year &&
+                 a.status === 'agendado';
+        });
+        
+        const isToday = currentDate.toDateString() === hoje.toDateString();
+        const isPast = currentDate < hoje && !isToday;
+        
+        calendarHTML += `
+          <div class="calendar-day ${isToday ? 'active' : ''} ${isPast ? 'text-muted' : ''} ${hasEvent ? 'has-event' : ''}"
+               onclick="agendamentos.selecionarDia(${day})">
+            ${day}
+          </div>
+        `;
+      }
+      
+      container.innerHTML = calendarHTML;
+    },
+    
+    selecionarDia(dia) {
+      const year = this.currentDate.getFullYear();
+      const month = this.currentDate.getMonth();
+      const dataSelecionada = new Date(year, month, dia);
+      
+      // Preencher o formulário com a data selecionada
+      const dataHoraInput = document.getElementById('agendamento-datahora');
+      const dataISO = dataSelecionada.toISOString().split('T')[0];
+      const horaPadrao = '10:00';
+      dataHoraInput.value = `${dataISO}T${horaPadrao}`;
+      
+      ui.mostrarToast(`Data ${dia}/${month + 1} selecionada`);
+    },
+    
+    proximoMes() {
+      this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+      this.criarCalendario();
+    },
+    
+    mesAnterior() {
+      this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+      this.criarCalendario();
+    },
+
+    atualizarEstatisticas() {
+      const hoje = new Date();
+      const inicioDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+      const fimDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1);
+      
+      const agendamentosHoje = state.agendamentos.filter(a => {
+        const dataAgendamento = new Date(a.dataHora);
+        return dataAgendamento >= inicioDia && dataAgendamento < fimDia && a.status === 'agendado';
+      }).length;
+      
+      const inicioSemana = new Date(hoje);
+      inicioSemana.setDate(hoje.getDate() - hoje.getDay());
+      inicioSemana.setHours(0, 0, 0, 0);
+      
+      const agendamentosSemana = state.agendamentos.filter(a => {
+        const dataAgendamento = new Date(a.dataHora);
+        return dataAgendamento >= inicioSemana && a.status === 'agendado';
+      }).length;
+      
+      const totalAgendamentos = state.agendamentos.length;
+      const agendamentosConcluidos = state.agendamentos.filter(a => a.status === 'concluido').length;
+      const taxaComparecimento = totalAgendamentos > 0 ? 
+        Math.round((agendamentosConcluidos / totalAgendamentos) * 100) : 0;
+      
+      document.getElementById('agendamentos-hoje').textContent = agendamentosHoje;
+      document.getElementById('agendamentos-semana').textContent = agendamentosSemana;
+      document.getElementById('taxa-comparecimento').textContent = taxaComparecimento + '%';
+    }
+  };
+
   // Relatórios
   const relatorios = {
     atualizar() {
@@ -1662,6 +2208,16 @@
       const atendimentosMes = state.atendimentos.filter(a => new Date(a.data) >= inicioMes).length;
       const ticketMedio = atendimentosMes > 0 ? totalMes / atendimentosMes : 0;
       
+      // Clientes do mês
+      const clientesMes = [...new Set(
+        state.atendimentos
+          .filter(a => new Date(a.data) >= inicioMes)
+          .map(a => a.clienteId)
+      )].length;
+      
+      // Clientes fiéis (3+ atendimentos)
+      const clientesFieis = state.clientes.filter(c => (c.totalAtendimentos || 0) >= 3).length;
+      
       // Cálculos do mês anterior para comparação
       const totalMesAnterior = state.atendimentos
         .filter(a => new Date(a.data) >= inicioMesAnterior && new Date(a.data) <= fimMesAnterior)
@@ -1673,19 +2229,15 @@
           .map(a => a.clienteId)
       )].length;
       
-      const clientesMes = [...new Set(
-        state.atendimentos
-          .filter(a => new Date(a.data) >= inicioMes)
-          .map(a => a.clienteId)
-      )].length;
-      
       // Atualizar KPIs
       document.getElementById('kpi-pendente').textContent = utils.formatarMoeda(pendente);
       document.getElementById('kpi-recebido').textContent = utils.formatarMoeda(recebidoMes);
       document.getElementById('kpi-total').textContent = utils.formatarMoeda(totalMes);
+      document.getElementById('kpi-clientes').textContent = clientesMes;
       document.getElementById('total-clientes').textContent = state.clientes.length;
       document.getElementById('atendimentos-mes').textContent = atendimentosMes;
       document.getElementById('ticket-medio').textContent = utils.formatarMoeda(ticketMedio);
+      document.getElementById('clientes-fieis').textContent = clientesFieis;
       
       // Atualizar comparativos
       const diffFaturamento = utils.calcularDiferencaPercentual(totalMes, totalMesAnterior);
@@ -1831,10 +2383,12 @@
       document.getElementById('armazenamento-usado').textContent = tamanho + ' KB';
       
       document.getElementById('total-registros').textContent = 
-        state.clientes.length + state.servicos.length + state.atendimentos.length;
+        state.clientes.length + state.servicos.length + state.atendimentos.length + state.agendamentos.length;
       
       const backups = JSON.parse(localStorage.getItem('manicureApp_backups') || '[]');
       document.getElementById('backups-realizados').textContent = backups.length;
+      
+      document.getElementById('versao-app').textContent = state.config.versao;
     }
   };
 
@@ -1881,6 +2435,10 @@
     clientes.renderizar();
     servicos.renderizar();
     servicos.atualizarEstatisticas();
+    agendamentos.atualizarSelectClientes();
+    agendamentos.atualizarSelectServicos();
+    agendamentos.renderizar();
+    agendamentos.atualizarEstatisticas();
     relatorios.atualizar();
     backup.atualizarStatus();
     
@@ -1903,26 +2461,67 @@
     document.getElementById('form-cliente').addEventListener('submit', (e) => {
       e.preventDefault();
       const nome = document.getElementById('cliente-nome').value.trim();
+      const telefone = document.getElementById('cliente-telefone').value.trim();
+      const observacoes = document.getElementById('cliente-observacoes').value.trim();
+      
       if (nome) {
-        clientes.adicionar(nome);
+        clientes.adicionar({ nome, telefone, observacoes });
         e.target.reset();
       }
     });
+    
+    // Busca de clientes
+    document.getElementById('busca-cliente').addEventListener('input', utils.debounce((e) => {
+      const termo = e.target.value.trim();
+      const resultados = clientes.buscar(termo);
+      clientes.renderizar(resultados);
+    }, 300));
     
     // Formulário de serviço
     document.getElementById('form-servico').addEventListener('submit', (e) => {
       e.preventDefault();
       const nome = document.getElementById('servico-nome').value.trim();
       const preco = document.getElementById('servico-preco').value;
+      const duracao = document.getElementById('servico-duracao').value;
       const categoria = document.getElementById('servico-categoria').value;
+      const descricao = document.getElementById('servico-descricao').value.trim();
+      
       if (nome && preco) {
         servicos.adicionar({ 
           nome, 
           preco: parseFloat(preco), 
-          categoria 
+          duracao,
+          categoria,
+          descricao
         });
         e.target.reset();
       }
+    });
+    
+    // Formulário de agendamento
+    document.getElementById('form-agendamento').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const clienteId = document.getElementById('agendamento-cliente').value;
+      const dataHora = document.getElementById('agendamento-datahora').value;
+      const observacoes = document.getElementById('agendamento-observacoes').value.trim();
+      
+      const servicosSelecionados = Array.from(document.querySelectorAll('#lista-servicos-agendamento .service-checkbox:checked'));
+      
+      if (!clienteId || !dataHora || servicosSelecionados.length === 0) {
+        ui.mostrarToast('Preencha todos os campos obrigatórios!', 'error');
+        return;
+      }
+      
+      const servicosIds = servicosSelecionados.map(cb => cb.value);
+      
+      agendamentos.adicionar({
+        clienteId,
+        dataHora,
+        servicos: servicosIds,
+        observacoes
+      });
+      
+      e.target.reset();
     });
     
     // Formulário de atendimento
@@ -1947,7 +2546,8 @@
         data: document.getElementById('atendimento-data').value,
         servicos: servicosData,
         valorTotal: valorTotal,
-        statusPagamento: document.getElementById('atendimento-status-pagamento').value
+        statusPagamento: document.getElementById('atendimento-status-pagamento').value,
+        observacoes: document.getElementById('atendimento-observacoes').value
       });
       
       e.target.reset();
@@ -1969,6 +2569,10 @@
         servicos.filtrar(filtro);
       });
     });
+    
+    // Calendário
+    document.getElementById('prev-month').addEventListener('click', () => agendamentos.mesAnterior());
+    document.getElementById('next-month').addEventListener('click', () => agendamentos.proximoMes());
     
     // Backup
     document.getElementById('btn-backup').addEventListener('click', () => backup.fazer());
@@ -1995,6 +2599,15 @@
       btn.addEventListener('click', (e) => {
         const modal = e.target.closest('.modal');
         if (modal) {
+          ui.fecharModal(modal.id);
+        }
+      });
+    });
+    
+    // Fechar modal ao clicar fora
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
           ui.fecharModal(modal.id);
         }
       });
